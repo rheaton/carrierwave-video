@@ -22,7 +22,7 @@ Using bundler:
     class Video
       mount_uploader :file, VideoUploader
 
-      def set_success
+      def set_success(format, opts)
         self.success = true
       end
     end
@@ -46,6 +46,8 @@ Watermark:
 Callbacks:
 These are methods defined on the model. They will be run as part of the transcoding process.
 Useful for notating failure and completion.
+They will be called with the parameters sent to process.
+
     callbacks: {
       before_transcode: :method
       after_transcode: :method

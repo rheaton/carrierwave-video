@@ -55,22 +55,26 @@ describe CarrierWave::Video do
 
     context "callbacks set" do
       before { movie.should_receive(:transcode) }
+      let(:opts) do
+        { callbacks: {
+             before_transcode: :method1,
+             after_transcode: :method2,
+             rescue: :method3,
+             ensure: :method4
+          }
+        }
+      end
 
       context "no exceptions raised" do
         before {  File.should_receive(:rename) }
 
         it "calls before_transcode, after_transcode, and ensure" do
-          converter.model.should_receive(:method1).ordered
-          converter.model.should_receive(:method2).ordered
+          converter.model.should_receive(:method1).with(format, opts).ordered
+          converter.model.should_receive(:method2).with(format, opts).ordered
           converter.model.should_not_receive(:method3)
-          converter.model.should_receive(:method4).ordered
+          converter.model.should_receive(:method4).with(format, opts).ordered
 
-          converter.encode_video(format, callbacks: {
-                                 before_transcode: :method1,
-                                 after_transcode: :method2,
-                                 rescue: :method3,
-                                 ensure: :method4
-          })
+          converter.encode_video(format, opts)
         end
       end
 
@@ -78,19 +82,15 @@ describe CarrierWave::Video do
         let(:e) { StandardError.new("test error") }
         before { File.should_receive(:rename).and_raise(e) }
 
+
         it "calls before_transcode and ensure" do
-          converter.model.should_receive(:method1).ordered
+          converter.model.should_receive(:method1).with(format, opts).ordered
           converter.model.should_not_receive(:method2)
-          converter.model.should_receive(:method3).ordered
-          converter.model.should_receive(:method4).ordered
+          converter.model.should_receive(:method3).with(format, opts).ordered
+          converter.model.should_receive(:method4).with(format, opts).ordered
 
           lambda do
-            converter.encode_video(format, callbacks: {
-                                   before_transcode: :method1,
-                                   after_transcode: :method2,
-                                   rescue: :method3,
-                                   ensure: :method4
-            })
+            converter.encode_video(format, opts)
           end.should raise_exception(e)
         end
       end

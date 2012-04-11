@@ -15,31 +15,30 @@ module CarrierWave
       # move upload to local cache
       cache_stored_file! if !cached?
 
-      options = CarrierWave::Video::FfmpegOptions.new(format, opts)
+      @options = CarrierWave::Video::FfmpegOptions.new(format, opts)
       tmp_path  = File.join( File.dirname(current_path), "tmpfile.#{format}" )
 
 
-      with_trancoding_callbacks(opts) do
+      with_trancoding_callbacks do
         file = ::FFMPEG::Movie.new(current_path)
-        file.transcode(tmp_path, options.format_options, options.encoder_options)
+        file.transcode(tmp_path, @options.format_options, @options.encoder_options)
         File.rename tmp_path, current_path
       end
     end
 
     private
-      def with_trancoding_callbacks(opts, &block)
-        callbacks = opts[:callbacks] || {}
-        logger_opt = opts[:logger]
+      def with_trancoding_callbacks(&block)
+        callbacks = @options.callbacks
+        logger = @options.logger(model)
         begin
           send_callback(callbacks[:before_transcode])
-          setup_logger(logger_opt)
+          setup_logger
           block.call
           send_callback(callbacks[:after_transcode])
         rescue => e
           send_callback(callbacks[:rescue])
 
-          if logger_opt
-            logger = model.send(logger_opt)
+          if logger
             logger.error "#{e.class}: #{e.message}"
             e.backtrace.each do |b|
               logger.error b
@@ -54,13 +53,13 @@ module CarrierWave
       end
 
       def send_callback(callback)
-        model.send(callback) if callback.present?
+        model.send(callback, @options.format, @options.raw) if callback.present?
       end
 
-      def setup_logger(opt)
-        return unless opt.present?
+      def setup_logger
+        return unless @options.logger(model).present?
         @ffmpeg_logger = ::FFMPEG.logger
-        ::FFMPEG.logger = model.send(opt)
+        ::FFMPEG.logger = @options.logger(model)
       end
 
       def reset_logger

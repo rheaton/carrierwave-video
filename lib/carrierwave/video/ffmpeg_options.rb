@@ -2,17 +2,29 @@ module CarrierWave
   module Video
     class FfmpegOptions
       attr_reader :watermark_path, :watermark_position, :watermark_pixels,
-        :format, :resolution
+        :format, :resolution, :callbacks
 
       def initialize(format, options)
         @format = format.to_s
         @watermark = options[:watermark].present?
         @resolution = options[:resolution] || "640x360"
+        @callbacks = options[:callbacks] || {}
+        @logger = options[:logger]
+        @unparsed = options
+
         if watermark?
           @watermark_path = options[:watermark][:path]
           @watermark_position = options[:watermark][:position].to_s || :bottom_right
           @watermark_pixels = options[:watermark][:pixels_from_edge] || 10
         end
+      end
+
+      def raw
+        @unparsed
+      end
+
+      def logger(model)
+        model.send(@logger) if @logger.present?
       end
 
       def encoder_options
