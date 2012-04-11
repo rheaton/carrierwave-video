@@ -23,7 +23,6 @@ Gem::Specification.new do |s|
 
   s.add_runtime_dependency 'streamio-ffmpeg'#, :git => 'git://github.com/stakach/streamio-ffmpeg.git'
   s.add_runtime_dependency 'carrierwave'
-  s.add_runtime_dependency 'active_support'
   s.requirements << 'ruby, version 1.9 or greater'
   s.requirements << 'ffmpeg, version 0.10 or greater with libx256, libfaac, libtheora, libvorbid, libvpx enabled'
 end
