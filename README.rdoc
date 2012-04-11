@@ -56,3 +56,4 @@ Logging:
 = Upcoming
 
 * screengrabs
+* ffmpeg gives a confusing error if watermark file does not exist, raise in ruby
