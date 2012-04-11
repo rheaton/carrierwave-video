@@ -62,12 +62,14 @@ describe CarrierWave::Video do
         it "calls before_transcode, after_transcode, and ensure" do
           converter.model.should_receive(:method1).ordered
           converter.model.should_receive(:method2).ordered
-          converter.model.should_receive(:method3).ordered
+          converter.model.should_not_receive(:method3)
+          converter.model.should_receive(:method4).ordered
 
           converter.encode_video(format, callbacks: {
                                  before_transcode: :method1,
                                  after_transcode: :method2,
-                                 ensure: :method3
+                                 rescue: :method3,
+                                 ensure: :method4
           })
         end
       end
@@ -80,12 +82,14 @@ describe CarrierWave::Video do
           converter.model.should_receive(:method1).ordered
           converter.model.should_not_receive(:method2)
           converter.model.should_receive(:method3).ordered
+          converter.model.should_receive(:method4).ordered
 
           lambda do
             converter.encode_video(format, callbacks: {
                                    before_transcode: :method1,
                                    after_transcode: :method2,
-                                   ensure: :method3
+                                   rescue: :method3,
+                                   ensure: :method4
             })
           end.should raise_exception(e)
         end
@@ -115,6 +119,9 @@ describe CarrierWave::Video do
         before { File.should_receive(:rename).and_raise(e) }
 
         it "logs exception" do
+          logger.should_receive(:error).with("#{e.class}: #{e.message}")
+          logger.should_receive(:error).any_number_of_times #backtrace
+
           lambda do
             converter.encode_video(format, logger: :logger)
           end.should raise_exception(e)

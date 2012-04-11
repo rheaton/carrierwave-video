@@ -44,9 +44,12 @@ Watermark:
     }
 
 Callbacks:
+These are methods defined on the model. They will be run as part of the transcoding process.
+Useful for notating failure and completion.
     callbacks: {
       before_transcode: :method
       after_transcode: :method
+      rescue: :method
       ensure: :method
     }
 

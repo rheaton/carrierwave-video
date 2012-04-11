@@ -35,6 +35,18 @@ module CarrierWave
           setup_logger(logger_opt)
           block.call
           send_callback(callbacks[:after_transcode])
+        rescue => e
+          send_callback(callbacks[:rescue])
+
+          if logger_opt
+            logger = model.send(logger_opt)
+            logger.error "#{e.class}: #{e.message}"
+            e.backtrace.each do |b|
+              logger.error b
+            end
+          end
+
+          raise e
         ensure
           reset_logger
           send_callback(callbacks[:ensure])
