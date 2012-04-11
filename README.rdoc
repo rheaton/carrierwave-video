@@ -1,4 +1,4 @@
-= CarrierWave wVideo
+= CarrierWave Video Converter
 
 This gem adds a video converter using ffmpeg and the streamio-ffmpeg rubygem.
 Note: for watermarking to work, there a fork of the streamio-ffmpeg gem that must be used.
@@ -16,38 +16,43 @@ Using bundler:
     class VideoUploader < CarrierWave::Uploader::Base
       include CarrierWave::VideoConverter
 
-      OPTIONS = {
-        resolution: "640x360",
-        watermark: {
-          path: File.join(Rails.root, "directory", "file.png"),
-          position: :bottom_right, # also: :top_right, :bottom_left, :bottom_right
-          pixels_from_edge: 10
-        }
-      }
-
-      process encode_video: [:mp4, OPTIONS]
+      process encode_video: [:mp4, after_transcode: :set_success ]
     end
 
     class Video
       mount_uploader :file, VideoUploader
-    end
 
-= Logging
-
-You may want to log successful or unsuccessful transcodes.
-
-You can add the following methods to your model (in the example `Video`).
-If the transcode_logger method is not defined, ffmpeg will log to its default and exceptions will be raised.
-
-    class Video
-      def prepare_transcode_logger
-      end
-
-      def transcode_logger
-        # this should return an object that behaves like Logger
-      end
-
-      def close_transcode_logger
+      def set_success
+        self.success = true
       end
     end
 
+= Possible Options
+
+Pass in options to process:
+
+    process encode_video: [:mp4, resolution: "200x200"]
+
+Resolution passed to ffmpeg:
+    resolution: "640x360"
+
+Watermark:
+    watermark: {
+      path: File.join(Rails.root, "directory", "file.png"),
+      position: :bottom_right, # also: :top_right, :bottom_left, :bottom_right
+      pixels_from_edge: 10
+    }
+
+Callbacks:
+    callbacks: {
+      before_transcode: :method
+      after_transcode: :method
+      ensure: :method
+    }
+
+Logging:
+    logger: :method  #returns object that behaves like Logger
+
+= Upcoming
+
+* screengrabs
