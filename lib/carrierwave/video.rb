@@ -19,7 +19,7 @@ module CarrierWave
       tmp_path  = File.join( File.dirname(current_path), "tmpfile.#{format}" )
 
 
-      with_callbacks(opts) do
+      with_trancoding_callbacks(opts) do
         file = ::FFMPEG::Movie.new(current_path)
         file.transcode(tmp_path, options.format_options, options.encoder_options)
         File.rename tmp_path, current_path
@@ -27,7 +27,7 @@ module CarrierWave
     end
 
     private
-      def with_callbacks(opts, &block)
+      def with_trancoding_callbacks(opts, &block)
         callbacks = opts[:callbacks] || {}
         logger_opt = opts[:logger]
         begin
