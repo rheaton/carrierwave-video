@@ -91,7 +91,7 @@ describe CarrierWave::Video do
 
           lambda do
             converter.encode_video(format, opts)
-          end.should raise_exception(e)
+          end.should raise_exception(CarrierWave::ProcessingError)
         end
       end
     end
@@ -124,7 +124,7 @@ describe CarrierWave::Video do
 
           lambda do
             converter.encode_video(format, logger: :logger)
-          end.should raise_exception(e)
+          end.should raise_exception(CarrierWave::ProcessingError)
         end
       end
     end
