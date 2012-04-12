@@ -18,7 +18,7 @@ Using bundler:
     class VideoUploader < CarrierWave::Uploader::Base
       include CarrierWave::VideoConverter
 
-      process encode_video: [:mp4, after_transcode: :set_success ]
+      process encode_video: [:mp4, callbacks: { after_transcode: :set_success } ]
     end
 
     class Video
