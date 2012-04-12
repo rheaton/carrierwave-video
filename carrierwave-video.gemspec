@@ -20,6 +20,7 @@ Gem::Specification.new do |s|
 
   # specify any dependencies here; for example:
   s.add_development_dependency "rspec"
+  s.add_development_dependency "rake"
 
   s.add_runtime_dependency 'streamio-ffmpeg'#, :git => 'git://github.com/stakach/streamio-ffmpeg.git'
   s.add_runtime_dependency 'carrierwave'
