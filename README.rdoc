@@ -1,5 +1,7 @@
 = CarrierWave Video Converter
 
+[![Build Status](https://secure.travis-ci.org/rheaton/carrierwave-video.png?branch=master)](http://travis-ci.org/rheaton/carrierwave-video)
+
 This gem adds a video converter using ffmpeg and the streamio-ffmpeg rubygem.
 Note: for watermarking to work, there a fork of the streamio-ffmpeg gem that must be used.
 
