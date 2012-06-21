@@ -37,7 +37,7 @@ module CarrierWave
           {
             video_codec: 'libx264',
             audio_codec: 'libfaac',
-            custom: "-b 1500k -vpre slow -vpre baseline -g 30 #{watermark_params}"
+            custom: "-qscale 0 -vpre slow -vpre baseline -g 30 #{watermark_params}"
           }
         when "webm"
           {
