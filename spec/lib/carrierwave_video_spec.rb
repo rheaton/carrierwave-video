@@ -26,6 +26,18 @@ describe CarrierWave::Video do
     end
   end
 
+  describe ".encode_ogv" do
+    it "processes the model" do
+      TestVideoUploader.should_receive(:process).with(encode_ogv: [:opts])
+      TestVideoUploader.encode_ogv(:opts)
+    end
+
+    it "does not require options" do
+      TestVideoUploader.should_receive(:process).with(encode_ogv: [{}])
+      TestVideoUploader.encode_ogv
+    end
+  end
+
   describe "#encode_video" do
     let(:format) { 'webm' }
     let(:movie) { mock }
