@@ -1,13 +1,41 @@
 require 'streamio-ffmpeg'
 require 'carrierwave'
 require 'carrierwave/video/ffmpeg_options'
+require 'carrierwave/video/ffmpeg_theora'
 
 module CarrierWave
   module Video
     extend ActiveSupport::Concern
+    def self.ffmpeg2theora_binary=(bin)
+      @ffmpeg2theora = bin
+    end
+
+    def self.ffmpeg2theora_binary
+      @ffmpeg2theora.nil? ? 'ffmpeg2theora' : @ffmpeg2theora
+    end
+
     module ClassMethods
       def encode_video(target_format, options={})
         process encode_video: [target_format, options]
+      end
+
+      def encode_ogv(opts={})
+        process encode_ogv: [opts]
+      end
+
+    end
+
+    def encode_ogv(opts)
+      # move upload to local cache
+      cache_stored_file! if !cached?
+
+      tmp_path  = File.join( File.dirname(current_path), "tmpfile.ogv" )
+      @options = CarrierWave::Video::FfmpegOptions.new('ogv', opts)
+
+      with_trancoding_callbacks do
+        transcoder = CarrierWave::Video::FfmpegTheora.new(current_path, tmp_path)
+        transcoder.run(@options.logger(model))
+        File.rename tmp_path, current_path
       end
     end
 

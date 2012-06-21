@@ -179,4 +179,30 @@ describe CarrierWave::Video do
       end
     end
   end
+
+
+  describe "#encode_ogv" do
+    let(:movie) { mock }
+    let(:output_path) { 'video/path/tmpfile.ogv' }
+    let(:movie_path) { 'video/path/input.mov' }
+    let(:logger) { mock(:logger) }
+
+
+    before do
+      converter.model.stub(:logger).and_return(logger)
+      File.should_receive(:rename)
+      converter.stub(:current_path).and_return('video/path/input.mov')
+    end
+
+    context "no options set" do
+      it "calls transcode with correct format options" do
+        transcoder = mock(:transcoder)
+        CarrierWave::Video::FfmpegTheora.should_receive(:new).with(movie_path, output_path).and_return(transcoder)
+        transcoder.should_receive(:run)
+
+        converter.encode_ogv({})
+      end
+    end
+  end
+
 end
