@@ -18,5 +18,18 @@ describe CarrierWave::Video::FfmpegTheora do
 
       transcoder.run
     end
+
+    context "given a logger" do
+      let(:logger) { mock(:logger) }
+
+      it "should run and log results" do
+        command = "#{binary} #{input_file_path} -o #{output_file_path}"
+        Open3.should_receive(:popen3).with(command)
+        logger.should_receive(:info).with("Running....#{command}")
+        logger.should_receive(:error).with("Failure!")
+
+        transcoder.run(logger)
+      end
+    end
   end
 end

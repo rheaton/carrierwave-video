@@ -203,6 +203,20 @@ describe CarrierWave::Video do
         converter.encode_ogv({})
       end
     end
+
+    context "with logger set" do
+      before do
+        converter.model.stub(:logger).and_return(logger)
+      end
+
+      it "calls transcode with correct format options and passes logger to transcoder" do
+        transcoder = mock(:transcoder)
+        CarrierWave::Video::FfmpegTheora.should_receive(:new).with(movie_path, output_path).and_return(transcoder)
+        transcoder.should_receive(:run).with(logger)
+
+        converter.encode_ogv({logger: :logger})
+      end
+    end
   end
 
 end
