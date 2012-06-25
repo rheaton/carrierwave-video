@@ -59,7 +59,37 @@ They will be called with the parameters sent to process.
 Logging:
     logger: :method  #returns object that behaves like Logger
 
-= Upcoming
+= OGG/OGV & Theora
 
-* screengrabs
+If you want to transcode to OGV format, I recommend using ffmpeg2theora. It works better.
+Support for this is built into this gem, but it is not as mature as the transcoding
+support built into the streamio-ffmpeg gem. You will need to install the ffmpeg2theora binary.
+http://v2v.cc/~j/ffmpeg2theora/
+
+ffmpeg2theora does not have watermark support, so if you want a watermark, I recommend
+building the theora file off previous version. I have not built in resolution or any other options
+as I am just creating mine from a previous version (in the correct size/with watermark).
+If you need support for this it shouldn't be too hard to add. (Use streamio-ffmpeg for inspiration)
+
+Example:
+
+    class VideoUploader < CarrierWave::Uploader::Base
+      include CarrierWave::VideoConverter
+
+      version :mp4 do
+        process :encode_video => [:mp4, {...}]
+      end
+
+      version :ogv, :from_version => :mp4 do
+        process :encode_ogv => [{ logger: logger_method, callbacks: {...}  }]
+      end
+    end
+
+You do not need to pass in the format to the encode_ogv method (as it is always ogv).
+The only options that do work are logger and callbacks. Others will be ignored.
+
+
+= Upcoming and notes
+
 * ffmpeg gives a confusing error if watermark file does not exist, raise in ruby
+* error handling/checking (extract from streamio-ffmpeg gem's transcoder) for encode_ogv
