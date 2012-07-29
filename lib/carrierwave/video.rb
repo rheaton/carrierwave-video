@@ -49,6 +49,11 @@ module CarrierWave
 
       with_trancoding_callbacks do
         file = ::FFMPEG::Movie.new(current_path)
+
+        if opts[:resolution] == :same
+          @options.format_options[:resolution] = file.resolution
+        end
+
         file.transcode(tmp_path, @options.format_options, @options.encoder_options)
         File.rename tmp_path, current_path
       end

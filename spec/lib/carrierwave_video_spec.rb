@@ -48,9 +48,10 @@ describe CarrierWave::Video do
       FFMPEG::Movie.should_receive(:new).and_return(movie)
     end
 
-    context "no options set" do
+    context "with no options set" do
       before {  File.should_receive(:rename) }
-      it "is calls transcode with correct format options" do
+
+      it "calls transcode with correct format options" do
         movie.should_receive(:transcode) do |path, opts, codec_opts|
           codec_opts.should == {preserve_aspect_ratio: :width}
 
@@ -63,9 +64,17 @@ describe CarrierWave::Video do
 
         converter.encode_video(format)
       end
+
+      it "provides a default for the resolution" do
+        movie.should_receive(:transcode) do |path, opts, codec_opts|
+          opts[:resolution].should == '640x360'
+        end
+
+        converter.encode_video(format)
+      end
     end
 
-    context "callbacks set" do
+    context "with callbacks set" do
       before { movie.should_receive(:transcode) }
       let(:opts) do
         { callbacks: {
@@ -108,7 +117,7 @@ describe CarrierWave::Video do
       end
     end
 
-    context "logger set" do
+    context "with logger set" do
       let(:logger) { mock }
       before do
         converter.model.stub(:logger).and_return(logger)
@@ -141,7 +150,7 @@ describe CarrierWave::Video do
       end
     end
 
-    context "watermark set" do
+    context "with watermark set" do
       before { File.should_receive(:rename) }
 
       it "appends watermark params to custom params for ffmpeg" do
@@ -176,6 +185,21 @@ describe CarrierWave::Video do
         converter.encode_video(format, watermark: {
           path: 'path/to/file.png'
         })
+      end
+    end
+
+    context "with resolution set to :same" do
+      before do
+        File.should_receive(:rename)
+        movie.stub(:resolution).and_return('1280x720')
+      end
+
+      it "sets the output resolution to match that of the input" do
+        movie.should_receive(:transcode) do |path, opts, codec_opts|
+          opts[:resolution].should == '1280x720'
+        end
+
+        converter.encode_video(format, resolution: :same)
       end
     end
   end
