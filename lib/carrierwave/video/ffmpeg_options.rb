@@ -2,12 +2,13 @@ module CarrierWave
   module Video
     class FfmpegOptions
       attr_reader :watermark_path, :watermark_position, :watermark_pixels,
-        :format, :resolution, :callbacks
+        :format, :resolution, :custom, :callbacks
 
       def initialize(format, options)
         @format = format.to_s
         @watermark = options[:watermark].present?
         @resolution = options[:resolution] || "640x360"
+        @custom = options[:custom]
         @callbacks = options[:callbacks] || {}
         @logger = options[:logger]
         @unparsed = options
@@ -55,7 +56,10 @@ module CarrierWave
           else
             {}
           end
-          { resolution: resolution }.merge(result)
+
+          { resolution: resolution }.merge(result).tap do |h|
+            h[:custom] = "#{custom} #{watermark_params}".strip if custom.present?
+          end
         end
       end
 

@@ -202,6 +202,30 @@ describe CarrierWave::Video do
         converter.encode_video(format, resolution: :same)
       end
     end
+
+    context "with custom passed in" do
+      before do
+        File.should_receive(:rename)
+      end
+
+      it "takes the provided custom param" do
+        movie.should_receive(:transcode) do |path, opts, codec_opts|
+          opts[:custom].should == '-preset slow' # a la changes in ffmpeg 0.11.1
+        end
+
+        converter.encode_video(format, custom: '-preset slow')
+      end
+
+      it "maintains the watermark params" do
+        movie.should_receive(:transcode) do |path, opts, codec_opts|
+          opts[:custom].should == "-preset slow -vf \"movie=path/to/file.png [logo]; [in][logo] overlay= [out]\""
+        end
+
+        converter.encode_video(format, custom: '-preset slow', watermark: {
+          path: 'path/to/file.png'
+        })
+      end
+    end
   end
 
 
