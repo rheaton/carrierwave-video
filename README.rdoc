@@ -37,6 +37,9 @@ Pass in options to process:
 Resolution passed to ffmpeg:
     resolution: "640x360"
 
+If you want to keep the same resolution:
+  resolution: :same
+
 Watermark:
     watermark: {
       path: File.join(Rails.root, "directory", "file.png"),
@@ -58,6 +61,9 @@ They will be called with the parameters sent to process.
 
 Logging:
     logger: :method  #returns object that behaves like Logger
+
+Custom:
+  streamio-ffmpeg accepts custom params. You may pass these in but keep in mind the watermarking params will be appended if there were any.
 
 = OGG/OGV & Theora
 
