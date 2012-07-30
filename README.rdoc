@@ -63,7 +63,8 @@ Logging:
     logger: :method  #returns object that behaves like Logger
 
 Custom:
-  streamio-ffmpeg accepts custom params. You may pass these in but keep in mind the watermarking params will be appended if there were any.
+streamio-ffmpeg accepts custom params. You may pass these in but keep in mind the watermarking params will be appended if there were any.
+  custom: '-b 1500k'
 
 = OGG/OGV & Theora
 
