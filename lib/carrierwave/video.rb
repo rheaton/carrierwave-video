@@ -44,17 +44,17 @@ module CarrierWave
       cache_stored_file! if !cached?
 
       @options = CarrierWave::Video::FfmpegOptions.new(format, opts)
-      tmp_path  = File.join( File.dirname(current_path), "tmpfile.#{format}" )
+      tmp_path = File.join( File.dirname(current_path), "tmpfile.#{format}" )
+      file = ::FFMPEG::Movie.new(current_path)
 
+      if opts[:resolution] == :same
+        @options.format_options[:resolution] = file.resolution
+      end
+
+      yield(file, @options.format_options) if block_given?
 
       with_trancoding_callbacks do
-        file = ::FFMPEG::Movie.new(current_path)
-
-        if opts[:resolution] == :same
-          @options.format_options[:resolution] = file.resolution
-        end
-
-        file.transcode(tmp_path, @options.format_options, @options.encoder_options)
+        file.transcode(tmp_path, @options.format_params, @options.encoder_options)
         File.rename tmp_path, current_path
       end
     end
