@@ -15,7 +15,7 @@ Using bundler:
 = Usage
 
     class VideoUploader < CarrierWave::Uploader::Base
-      include CarrierWave::VideoConverter
+      include CarrierWave::Video
 
       process encode_video: [:mp4, callbacks: { after_transcode: :set_success } ]
     end
@@ -66,6 +66,28 @@ Custom:
 streamio-ffmpeg accepts custom params. You may pass these in but keep in mind the watermarking params will be appended if there were any.
   custom: '-b 1500k'
 
+= Dynamic Configuration
+
+    class VideoUploader < CarrierWave::Uploader::Base
+      include CarrierWave::Video
+
+      DEFAULTS = {
+        watermark: {
+          path: Rails.root.join('watermark-large.png')
+        }
+      }
+
+      process :encode
+
+      def encode
+        encode_video(:mp4, DEFAULTS) do |movie, params|
+          if movie.height < 720
+            params[:watermark][:path] = Rails.root.join('watermark-small.png')
+          end
+        end
+      end
+    end
+
 = OGG/OGV & Theora
 
 If you want to transcode to OGV format, I recommend using ffmpeg2theora. It works better.
@@ -81,7 +103,7 @@ If you need support for this it shouldn't be too hard to add. (Use streamio-ffmp
 Example:
 
     class VideoUploader < CarrierWave::Uploader::Base
-      include CarrierWave::VideoConverter
+      include CarrierWave::Video
 
       version :mp4 do
         process :encode_video => [:mp4, {...}]
