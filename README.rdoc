@@ -118,6 +118,16 @@ You do not need to pass in the format to the encode_ogv method (as it is always 
 The only options that do work are logger and callbacks. Others will be ignored.
 
 
+= ffmpeg installation notes:
+
+Installing with homebrew on OSX will get a nice configuration that works with this gem (including libx264 and libfaac for mp4's and libvorbis and libvpx for webm).
+The default quality of the libtheora and libvorbix ogv defaults is poor, but installed with the default homebrew. As mentioned above, you can use ffmpeg2theora.
+
+The default custom params for mp4 encoding use presets.
+You can change the custom params to use whatever you want, but the presets are supposed to give a better video quality.
+The preset files are here: http://www.mediasoftpro.com/aspnet-x264-presets.html
+Depending on how you installed ffmpeg, you need to put them in the correct directory: http://ffmpeg.org/ffmpeg.html#Preset-files
+
 = Upcoming and notes
 
 * ffmpeg gives a confusing error if watermark file does not exist, raise in ruby
