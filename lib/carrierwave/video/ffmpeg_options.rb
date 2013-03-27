@@ -72,7 +72,7 @@ module CarrierWave
             when 'mp4'
               h[:video_codec] = 'libx264'
               h[:audio_codec] = 'libfaac'
-              h[:custom] = '-qscale 0 -preset slow -vpre baseline -g 30'
+              h[:custom] = '-qscale 0 -preset slow -preset baseline -g 30'
             when 'ogv'
               h[:video_codec] = 'libtheora'
               h[:audio_codec] = 'libvorbis'
