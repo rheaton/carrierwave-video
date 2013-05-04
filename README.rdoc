@@ -130,5 +130,13 @@ Depending on how you installed ffmpeg, you need to put them in the correct direc
 
 = Upcoming and notes
 
+
+
 * ffmpeg gives a confusing error if watermark file does not exist, raise in ruby
 * error handling/checking (extract from streamio-ffmpeg gem's transcoder) for encode_ogv
+
+*NOTE:*
+For older versions of ffmpeg, the +-preset+ flag was called +-vpre+.  If you are using a version prior to 0.11, you must call carrierwave-video using the +custom+ option to change those flags.  Something along the lines of:
+
+    encode_video(:mp4, :custom => '-qscale 0 -vpre slow -vpre baseline -g 30')
+
