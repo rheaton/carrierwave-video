@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe CarrierWave::Video do
-  class Video;end
+  class Video; end
 
   class TestVideoUploader
     include CarrierWave::Video
