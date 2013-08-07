@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe CarrierWave::Video do
-  class Video; end
+  class Video;end
 
   class TestVideoUploader
     include CarrierWave::Video
@@ -147,6 +147,18 @@ describe CarrierWave::Video do
             converter.encode_video(format, logger: :logger)
           end.should raise_exception(CarrierWave::ProcessingError)
         end
+      end
+    end
+
+    context "with progress set" do
+      before do
+        File.should_receive(:rename)
+        movie.stub(:transcode).and_yield(0.0).and_yield(1.0)
+      end
+      it "logs progress" do
+        converter.model.should_receive(:progress).with(0.0)
+        converter.model.should_receive(:progress).with(1.0)
+        converter.encode_video(format, progress: :progress)
       end
     end
 
