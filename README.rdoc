@@ -60,7 +60,10 @@ They will be called with the parameters sent to process.
     }
 
 Logging:
-    logger: :method  #returns object that behaves like Logger
+    logger: :method   # returns object that behaves like Logger
+
+    progress: :method # method that accepts a value of progress e.g. 0.2 (20%)
+                      # from https://github.com/streamio/streamio-ffmpeg#transcoding
 
 Custom:
 streamio-ffmpeg accepts custom params. You may pass these in but keep in mind the watermarking params will be appended if there were any.
