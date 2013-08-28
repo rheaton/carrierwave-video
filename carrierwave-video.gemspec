@@ -7,7 +7,7 @@ Gem::Specification.new do |s|
   s.version     = Carrierwave::Video::VERSION
   s.authors     = ["rheaton"]
   s.email       = ["rachelmheaton@gmail.com"]
-  s.homepage    = ""
+  s.homepage    = "https://github.com/rheaton/carrierwave-video"
   s.summary     = %q{Carrierwave extension that uses ffmpeg to transcode videos.}
   s.description = %q{Transcodes to html5-friendly videos.}
 
