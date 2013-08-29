@@ -10,6 +10,7 @@ Gem::Specification.new do |s|
   s.homepage    = "https://github.com/rheaton/carrierwave-video"
   s.summary     = %q{Carrierwave extension that uses ffmpeg to transcode videos.}
   s.description = %q{Transcodes to html5-friendly videos.}
+  s.license = 'MIT'
 
   s.rubyforge_project = "carrierwave-video"
 
