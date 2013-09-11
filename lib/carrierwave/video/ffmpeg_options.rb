@@ -24,7 +24,7 @@ module CarrierWave
       end
 
       def progress(model)
-        lambda {|val| model.send(@progress, val)}
+        lambda {|val| model.send(@progress, val)} if @progress
       end
 
       def encoder_options
