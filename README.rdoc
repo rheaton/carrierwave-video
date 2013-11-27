@@ -65,6 +65,9 @@ Logging:
     progress: :method # method that accepts a value of progress e.g. 0.2 (20%)
                       # from https://github.com/streamio/streamio-ffmpeg#transcoding
 
+progress can take 1 or 3 arguments. With three arguments, it receives format, format_options, and the value of progress.
+e.g. `def progress(format, format_options, progress)` would receive something like `progress(:mp4, {}, 0.2)`
+
 Custom:
 streamio-ffmpeg accepts custom params. You may pass these in but keep in mind the watermarking params will be appended if there were any.
   custom: '-b 1500k'
