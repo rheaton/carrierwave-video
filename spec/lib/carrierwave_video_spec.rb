@@ -155,10 +155,19 @@ describe CarrierWave::Video do
         File.should_receive(:rename)
         movie.stub(:transcode).and_yield(0.0).and_yield(1.0)
       end
+      let(:opts) { {progress: :progress} }
+
       it "logs progress" do
         converter.model.should_receive(:progress).with(0.0)
         converter.model.should_receive(:progress).with(1.0)
         converter.encode_video(format, progress: :progress)
+      end
+
+      it "logs progress with format and options" do
+        converter.model.stub_chain(:method, :arity).and_return(3)
+        converter.model.should_receive(:progress).with(format, hash_including(opts), 0.0)
+        converter.model.should_receive(:progress).with(format, hash_including(opts), 1.0)
+        converter.encode_video(format, opts)
       end
     end
 

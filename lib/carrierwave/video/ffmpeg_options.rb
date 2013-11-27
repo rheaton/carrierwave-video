@@ -24,7 +24,10 @@ module CarrierWave
       end
 
       def progress(model)
-        lambda {|val| model.send(@progress, val)} if @progress
+        if @progress
+          args = model.method(@progress).arity == 3 ? [@format, @format_options] : []
+          lambda { |val| model.send(@progress, *(args + [val])) }
+        end
       end
 
       def encoder_options
