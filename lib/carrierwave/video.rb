@@ -51,6 +51,10 @@ module CarrierWave
         @options.format_options[:resolution] = file.resolution
       end
 
+      if opts[:video_bitrate] == :same
+        @options.format_options[:video_bitrate] = file.video_bitrate
+      end
+
       yield(file, @options.format_options) if block_given?
 
       progress = @options.progress(model)
