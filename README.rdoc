@@ -38,6 +38,8 @@ Resolution passed to ffmpeg:
     resolution: "640x360"
 
 If you want to keep the same resolution:
+Note: This only works with the edge version of streamio-ffmpeg (as of Feb 28, 2014) https://github.com/streamio/streamio-ffmpeg/issues/72
+
   resolution: :same
 
 If you want to keep the same video bitrate:
