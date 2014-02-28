@@ -40,6 +40,9 @@ Resolution passed to ffmpeg:
 If you want to keep the same resolution:
   resolution: :same
 
+If you want to keep the same video bitrate:
+  video_bitrate: :same
+
 Watermark:
     watermark: {
       path: File.join(Rails.root, "directory", "file.png"),
