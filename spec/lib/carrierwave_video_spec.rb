@@ -207,6 +207,18 @@ describe CarrierWave::Video do
           path: 'path/to/file.png'
         })
       end
+
+      it "removes watermark options from common options" do
+        movie.should_receive(:transcode) do |path, opts, codec_opts|
+          opts.should_not have_key(:watermark)
+        end
+
+        converter.encode_video(format, watermark: {
+          path: 'path/to/file.png',
+          position: :bottom_left,
+          pixels_from_edge: 5
+        })
+      end
     end
 
     context "with resolution set to :same" do

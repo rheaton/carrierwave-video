@@ -42,6 +42,7 @@ module CarrierWave
       # output
       def format_params
         params = @format_options.dup
+        params.delete(:watermark)
         params[:custom] = [params[:custom], watermark_params].compact.join(' ')
         params
       end
