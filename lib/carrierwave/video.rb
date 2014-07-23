@@ -90,7 +90,8 @@ module CarrierWave
             end
           end
 
-          raise CarrierWave::ProcessingError.new("Failed to transcode with FFmpeg. Check ffmpeg install and verify video is not corrupt or cut short. Original error: #{e}")
+          raise e
+
         ensure
           reset_logger
           send_callback(callbacks[:ensure])

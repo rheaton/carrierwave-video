@@ -103,7 +103,6 @@ describe CarrierWave::Video do
         let(:e) { StandardError.new("test error") }
         before { expect(File).to receive(:rename).and_raise(e) }
 
-
         it "calls before_transcode and ensure" do
           expect(converter.model).to receive(:method1).with(format, opts).ordered
           expect(converter.model).not_to receive(:method2)
@@ -112,7 +111,7 @@ describe CarrierWave::Video do
 
           expect do
             converter.encode_video(format, opts)
-          end.to raise_exception(CarrierWave::ProcessingError)
+          end.to raise_exception(e.class)
         end
       end
     end
@@ -145,7 +144,7 @@ describe CarrierWave::Video do
 
           expect do
             converter.encode_video(format, logger: :logger)
-          end.to raise_exception(CarrierWave::ProcessingError)
+          end.to raise_exception(e.class)
         end
       end
     end
