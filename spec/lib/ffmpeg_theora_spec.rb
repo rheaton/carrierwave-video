@@ -20,7 +20,7 @@ describe CarrierWave::Video::FfmpegTheora do
     end
 
     context "given a logger" do
-      let(:logger) { mock(:logger) }
+      let(:logger) { double(:logger) }
 
       it "should run and log results" do
         command = "#{binary} #{input_file_path} -o #{output_file_path}"

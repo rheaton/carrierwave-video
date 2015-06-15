@@ -40,7 +40,7 @@ describe CarrierWave::Video do
 
   describe "#encode_video" do
     let(:format) { 'webm' }
-    let(:movie) { mock }
+    let(:movie) { double }
 
     before do
       converter.stub(:current_path).and_return('video/path/file.mov')
@@ -118,7 +118,7 @@ describe CarrierWave::Video do
     end
 
     context "with logger set" do
-      let(:logger) { mock }
+      let(:logger) { double }
       before do
         converter.model.stub(:logger).and_return(logger)
         movie.should_receive(:transcode)
@@ -261,7 +261,7 @@ describe CarrierWave::Video do
     end
 
     context "given a block" do
-      let(:movie) { mock }
+      let(:movie) { double }
       let(:opts) { {} }
       let(:params) { { resolution: "640x360", watermark: {}, video_codec: "libvpx", audio_codec: "libvorbis", custom: "-b 1500k -ab 160000 -f webm -g 30" } }
 
@@ -321,10 +321,10 @@ describe CarrierWave::Video do
   end
 
   describe "#encode_ogv" do
-    let(:movie) { mock }
+    let(:movie) { double }
     let(:output_path) { 'video/path/tmpfile.ogv' }
     let(:movie_path) { 'video/path/input.mov' }
-    let(:logger) { mock(:logger) }
+    let(:logger) { double(:logger) }
 
 
     before do
@@ -335,7 +335,7 @@ describe CarrierWave::Video do
 
     context "no options set" do
       it "calls transcode with correct format options" do
-        transcoder = mock(:transcoder)
+        transcoder = double(:transcoder)
         CarrierWave::Video::FfmpegTheora.should_receive(:new).with(movie_path, output_path).and_return(transcoder)
         transcoder.should_receive(:run)
 
@@ -349,7 +349,7 @@ describe CarrierWave::Video do
       end
 
       it "calls transcode with correct format options and passes logger to transcoder" do
-        transcoder = mock(:transcoder)
+        transcoder = double(:transcoder)
         CarrierWave::Video::FfmpegTheora.should_receive(:new).with(movie_path, output_path).and_return(transcoder)
         transcoder.should_receive(:run).with(logger)
 
