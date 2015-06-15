@@ -14,19 +14,19 @@ describe CarrierWave::Video::FfmpegTheora do
 
     it "should run the ffmpeg2theora binary" do
       command = "#{binary} #{input_file_path} -o #{output_file_path}"
-      Open3.should_receive(:popen3).with(command)
+      expect(Open3).to receive(:popen3).with(command)
 
       transcoder.run
     end
 
     context "given a logger" do
-      let(:logger) { mock(:logger) }
+      let(:logger) { double(:logger) }
 
       it "should run and log results" do
         command = "#{binary} #{input_file_path} -o #{output_file_path}"
-        Open3.should_receive(:popen3).with(command)
-        logger.should_receive(:info).with("Running....#{command}")
-        logger.should_receive(:error).with("Failure!")
+        expect(Open3).to receive(:popen3).with(command)
+        expect(logger).to receive(:info).with("Running....#{command}")
+        expect(logger).to receive(:error).with("Failure!")
 
         transcoder.run(logger)
       end
