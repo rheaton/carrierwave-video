@@ -37,6 +37,14 @@ Pass in options to process:
 Resolution passed to ffmpeg:
     resolution: "640x360"
 
+Also, you can preserve initial video's aspect ratio by changing one of result's resolutions:
+    preserve_aspect_ratio: :width
+to change height of the video, depending on it's width (default value),
+    preserve_aspect_ratio: :height
+to change width of the video, depending on it's height, or
+    preserve_aspect_ratio: false
+to leave resolution unchanged
+
 If you want to keep the same resolution:
 
 Note: This only works with the edge version of streamio-ffmpeg (as of Feb 28, 2014) https://github.com/streamio/streamio-ffmpeg/issues/72
