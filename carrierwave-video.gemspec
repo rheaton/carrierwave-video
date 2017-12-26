@@ -20,7 +20,7 @@ Gem::Specification.new do |s|
   s.require_paths = ["lib"]
 
   # specify any dependencies here; for example:
-  s.add_development_dependency "rspec", "~> 3.3.0"
+  s.add_development_dependency "rspec", ">= 3.3.0"
   s.add_development_dependency "rake"
 
   s.add_runtime_dependency 'streamio-ffmpeg'
