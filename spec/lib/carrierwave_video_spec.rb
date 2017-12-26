@@ -57,7 +57,7 @@ describe CarrierWave::Video do
 
           expect(opts[:video_codec]).to eq('libvpx')
           expect(opts[:audio_codec]).to eq('libvorbis')
-          expect(opts[:custom]).to eq(%w(-b 1500k -ab 160000 -f webm -g 30))
+          expect(opts[:custom]).to eq(%w(-b 1500k -ab 160000 -f webm))
 
           expect(path).to eq("video/path/tmpfile.#{format}")
         end
@@ -179,7 +179,7 @@ describe CarrierWave::Video do
 
           expect(opts[:video_codec]).to eq('libvpx')
           expect(opts[:audio_codec]).to eq('libvorbis')
-          expect(opts[:custom]).to eq(["-b","1500k","-ab","160000","-f","webm","-g","30","-vf","\"movie=path/to/file.png [logo]; [in][logo] overlay=5:main_h-overlay_h-5 [out]\""])
+          expect(opts[:custom]).to eq(["-b","1500k","-ab","160000","-f","webm","-vf","\"movie=path/to/file.png [logo]; [in][logo] overlay=5:main_h-overlay_h-5 [out]\""])
 
           expect(path).to eq("video/path/tmpfile.#{format}")
         end
@@ -197,7 +197,7 @@ describe CarrierWave::Video do
 
           expect(opts[:video_codec]).to eq('libvpx')
           expect(opts[:audio_codec]).to eq('libvorbis')
-          expect(opts[:custom]).to eq(["-b","1500k","-ab","160000","-f","webm","-g","30","-vf","\"movie=path/to/file.png [logo]; [in][logo] overlay= [out]\""])
+          expect(opts[:custom]).to eq(["-b","1500k","-ab","160000","-f","webm","-vf","\"movie=path/to/file.png [logo]; [in][logo] overlay= [out]\""])
 
           expect(path).to eq("video/path/tmpfile.#{format}")
         end
@@ -262,7 +262,7 @@ describe CarrierWave::Video do
     context "given a block" do
       let(:movie) { double }
       let(:opts) { {} }
-      let(:params) { { resolution: "640x360", watermark: {}, video_codec: "libvpx", audio_codec: "libvorbis", custom: %w(-b 1500k -ab 160000 -f webm -g 30) } }
+      let(:params) { { resolution: "640x360", watermark: {}, video_codec: "libvpx", audio_codec: "libvorbis", custom: %w(-b 1500k -ab 160000 -f webm) } }
 
       before do
         expect(File).to receive(:rename)
