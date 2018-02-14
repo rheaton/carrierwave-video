@@ -84,7 +84,7 @@ e.g. `def progress(format, format_options, progress)` would receive something li
 
 Custom:
 streamio-ffmpeg accepts custom params. You may pass these in but keep in mind the watermarking params will be appended if there were any.
-  custom: '-b 1500k'
+  custom: %w(-b 1500k)
 
 = Dynamic Configuration
 
@@ -158,5 +158,5 @@ Depending on how you installed ffmpeg, you need to put them in the correct direc
 *NOTE:*
 For older versions of ffmpeg, the +-preset+ flag was called +-vpre+.  If you are using a version prior to 0.11, you must call carrierwave-video using the +custom+ option to change those flags.  Something along the lines of:
 
-    encode_video(:mp4, :custom => '-qscale 0 -vpre slow -vpre baseline -g 30')
+    encode_video(:mp4, :custom => %w(-qscale 0 -vpre slow -vpre baseline -g 30))
 
