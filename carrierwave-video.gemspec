@@ -20,11 +20,11 @@ Gem::Specification.new do |s|
   s.require_paths = ["lib"]
 
   # specify any dependencies here; for example:
-  s.add_development_dependency "rspec", "~> 3.3.0"
+  s.add_development_dependency "rspec", ">= 3.3.0"
   s.add_development_dependency "rake"
 
   s.add_runtime_dependency 'streamio-ffmpeg'
   s.add_runtime_dependency 'carrierwave'
   s.requirements << 'ruby, version 1.9 or greater'
-  s.requirements << 'ffmpeg, version 0.11.1 or greater with libx256, libfaac, libtheora, libvorbid, libvpx enabled'
+  s.requirements << 'ffmpeg, version 0.11.1 or greater with libx256, libfdk-aac, libtheora, libvorbid, libvpx enabled'
 end
